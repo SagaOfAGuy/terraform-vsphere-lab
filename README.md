@@ -12,10 +12,19 @@ cd terraform-vsphere-lab
 ```
 3. Configure infrastructure references and credentials in `variables.tf`
 4. To find the `filter` and `disks` values for the `vsphere_vmfs_disks` and the `vsphere_vmfs_datastore` resources, follow the steps below: 
-   - Navigate to the ESXi host hosting the vSphere client
-   - Click on the storage device on the left hand side of the navigation screen. In our case, this would be `DS3` 
+   - Navigate to the ESXi host hosting the vSphere client:
+     
+     ![image](https://github.com/SagaOfAGuy/terraform-vsphere-lab/assets/68156940/e85caa31-bf64-4f09-ba45-7a42b7254e7a)
+
+   - Click on the storage device on the left hand side of the navigation screen. In our case, this would be `DS3` which is boxed in red in the screenshot below: 
+
+     ![image](https://github.com/SagaOfAGuy/terraform-vsphere-lab/assets/68156940/70a5116a-1919-44c6-ae71-ea4a77cb1484)
+
    - After clicking on `DS3`, take note of the `Extent 0` value highlighted in red
-   - For the `filter` field of `vsphere_vmfs_disks` resource set it to `naa.xxxxxxxx` with the first 8 numbers following `naa`. In our case, this is `na.61418770` 
+
+     ![image](https://github.com/SagaOfAGuy/terraform-vsphere-lab/assets/68156940/02735f19-8dc0-4cc9-9538-01380867eee3)
+
+   -  For the `filter` field of `vsphere_vmfs_disks` resource set it to `naa.xxxxxxxx` with the first 8 numbers following `naa`. In our case, this is `na.61418770` 
    -  For the `disks` field of the `vsphere_vmfs_datastore` resource, paste the entire `naa` extent ID. In our case, this would be `naa.6141877044d509002b8a7c1d06c4214c`
    
 5. Apply terraform script to the vSphere environment
@@ -49,7 +58,6 @@ resource "vsphere_vmfs_datastore" "datastore" {
 	name = "test ${count.index}"
 	host_system_id = resource.vsphere_host.esxi_host.id
 	disks = ["naa.6141877044d509002b8a7c1d06c4214c"]
-	folder = "/DC1/datastore"
+	folder = "/${var.disk_extent_id}/datastore"
 }
 ```
-
