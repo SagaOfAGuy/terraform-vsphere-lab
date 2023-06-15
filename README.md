@@ -1,5 +1,8 @@
 # terraform-vsphere-lab
-Terraform script for creating basic infrastructure for vSphere homelab
+Terraform script for creating basic infrastructure for vSphere homelab including the following:
+- Datastore
+- Cluster
+- Resource Pool
 
 # Configure Resources
 1. Clone this repo
